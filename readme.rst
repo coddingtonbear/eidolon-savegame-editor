@@ -27,7 +27,11 @@ Use
 But where's my savegame?
 ------------------------
 
-OSX: ``~/Library/Application Support/Steam/SteamApps/common/Eidolon/EIDOLON.app/Contents/Resources/Engine/Config/SaveData.bin``
++---------+----------------------------------------------------------------------------------------------------------------------------+
+| OSX     | ``~/Library/Application Support/Steam/SteamApps/common/Eidolon/EIDOLON.app/Contents/Resources/Engine/Config/SaveData.bin`` |
++=========+============================================================================================================================+
+| Windows | ``C:\UDK\EIDOLON\Binaries\Win32\SaveData.bin``                                                                             |
++---------+----------------------------------------------------------------------------------------------------------------------------+
 
 Commands
 --------
