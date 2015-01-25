@@ -50,7 +50,7 @@ class Savegame(object):
 
     def _pack_string(self, string):
         return ''.join([
-            struct.pack('I', len(string) + 1),
+            struct.pack('i', len(string) + 1),
             string,
             '\x00',
         ])
@@ -77,12 +77,12 @@ class Savegame(object):
             self._pack_string(v) for v in value
         ])
         packed_array = ''.join([
-            struct.pack('I', len(value)),
+            struct.pack('i', len(value)),
             packed_strings,
         ])
         output = ''.join([
-            struct.pack('I', len(packed_array)),
-            struct.pack('I', 0),
+            struct.pack('i', len(packed_array)),
+            struct.pack('i', 0),
             packed_array,
         ])
         self.set_content_range(
@@ -95,15 +95,15 @@ class Savegame(object):
         data = self.data[name]
 
         packed_integers = ''.join([
-            struct.pack('I', v) for v in value
+            struct.pack('i', v) for v in value
         ])
         packed_array = ''.join([
-            struct.pack('I', len(value)),
+            struct.pack('i', len(value)),
             packed_integers
         ])
         output = ''.join([
-            struct.pack('I', len(packed_array)),
-            struct.pack('I', 0),
+            struct.pack('i', len(packed_array)),
+            struct.pack('i', 0),
             packed_array
         ])
         self.set_content_range(
