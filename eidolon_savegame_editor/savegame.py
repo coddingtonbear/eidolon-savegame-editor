@@ -137,7 +137,7 @@ class Savegame(object):
 
     def read_integer(self):
         end = self.cursor + 4
-        value = struct.unpack('I', self.contents[self.cursor:end])[0]
+        value = struct.unpack('i', self.contents[self.cursor:end])[0]
         logger.debug('Read integer: %s', value)
         self.cursor = end
         return value
