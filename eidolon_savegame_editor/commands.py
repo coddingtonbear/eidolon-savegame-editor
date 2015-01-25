@@ -1,4 +1,4 @@
-from prettytable import PrettyTable
+from texttable import Texttable
 
 
 COMMANDS = {}
@@ -6,7 +6,7 @@ PRINTABLE_TYPES = {
     'IntProperty': lambda x: x,
     'FloatProperty': lambda x: x,
     'StringProperty': lambda x: x,
-    'ArrayProperty': lambda x: ', '.join([str(v) for v in x])
+    'ArrayProperty': lambda x: '\n'.join([str(v) for v in x])
 }
 
 
@@ -22,7 +22,10 @@ def reset_hunger(save, backup, **kwargs):
 
 @command
 def show_properties(save, **kwargs):
-    table = PrettyTable(['Name', 'Type', 'Value'])
+    table = Texttable()
+    rows = [
+        ['Name', 'Type', 'Value']
+    ]
 
     for prop, data in save.data.items():
         value = '(not printable)'
@@ -31,6 +34,7 @@ def show_properties(save, **kwargs):
                 value = PRINTABLE_TYPES[data['type']](data['value'])
             except ValueError:
                 value = '(error while formatting)'
-        table.add_row([prop, data['type'], value])
+        rows.append([prop, data['type'], value])
+    table.add_rows(rows)
 
-    print table
+    print table.draw()
