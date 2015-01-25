@@ -53,11 +53,12 @@ Options for ``ITEM`` include:
 * ``Mushrooms``
 * ``Tinder``
 
-*or* any item in your inventory.
+*or* any other item in your inventory; use the key ``_items`` in
+``show_properties`` to see what's in your inventory currently.
 
-Note: This is limited to the above only because those are the only items
-I had in my pack while writing this.  If you have other item types in your
-pack, let me know.
+Note: If the item name you enter is not something that exists in
+Eidolon, it will be ignored by the game, but will stay in your
+savegame file forever.
 
 ``show_properties``
 ~~~~~~~~~~~~~~~~~~~

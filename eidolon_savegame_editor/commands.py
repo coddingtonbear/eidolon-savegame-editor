@@ -31,10 +31,6 @@ def add_items(save, backup, extra, **kwargs):
     parser = argparse.ArgumentParser(extra)
     parser.add_argument(
         'item', metavar='ITEM', type=str,
-        choices=list(
-            set(save.data['_items']['value']) |
-            set(KNOWN_INVENTORY_ITEMS)
-        ),
         help="Which item would you like to add to your inventory?",
     )
     parser.add_argument(
