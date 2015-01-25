@@ -83,12 +83,41 @@ class Savegame(object):
         self.cursor = end
         return value
 
-    def read_array_property(self):
-        size = self.read_integer()
+    def read_array_property_string(self):
+        # Size -- we don't need to read this
+        self.read_integer()
         # This appears to always be '0'
         self.read_integer()
-        end = self.cursor + size
-        value = self.contents[self.cursor:end]
+        count = self.read_integer()
+        logger.debug('Beginning to read array.')
+
+        value = []
+        for idx in range(count):
+            length = self.read_integer()
+            string = self.read_string(length)
+            logger.debug('Found array element %s (%s)', string, length)
+            value.append(string)
+
+        end = self.cursor
+        logger.debug('Read array value: %s', value)
+        self.cursor = end
+        return value
+
+    def read_array_property_integer(self):
+        # Size -- we don't need to read this
+        self.read_integer()
+        # This appears to always be '0'
+        self.read_integer()
+        count = self.read_integer()
+        logger.debug('Beginning to read array.')
+
+        value = []
+        for idx in range(count):
+            data = self.read_integer()
+            logger.debug('Found array element %s', data)
+            value.append(data)
+
+        end = self.cursor
         logger.debug('Read array value: %s', value)
         self.cursor = end
         return value
@@ -171,7 +200,10 @@ class Savegame(object):
                 meta['type'] = self.read_string(meta['_size'])
                 logger.debug('Found type "%s", reading value', meta['type'])
                 if meta['type'] == 'ArrayProperty':
-                    meta['value'] = self.read_array_property()
+                    if meta['name'] == '_itemCounts':
+                        meta['value'] = self.read_array_property_integer()
+                    else:
+                        meta['value'] = self.read_array_property_string()
                 if meta['type'] == 'StructProperty':
                     meta['value'] = self.read_struct_property()
                 if meta['type'] == 'FloatProperty':

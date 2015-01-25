@@ -1,9 +1,13 @@
-import json
-
 from prettytable import PrettyTable
 
 
 COMMANDS = {}
+PRINTABLE_TYPES = {
+    'IntProperty': lambda x: x,
+    'FloatProperty': lambda x: x,
+    'StringProperty': lambda x: x,
+    'ArrayProperty': lambda x: ', '.join([str(v) for v in x])
+}
 
 
 def command(fn):
@@ -22,11 +26,11 @@ def show_properties(save, **kwargs):
 
     for prop, data in save.data.items():
         value = '(not printable)'
-        if data['type'] in ['IntProperty', 'FloatProperty', 'StringProperty']:
+        if data['type'] in PRINTABLE_TYPES:
             try:
-                value = json.dumps(data['value'])
+                value = PRINTABLE_TYPES[data['type']](data['value'])
             except ValueError:
-                pass
+                value = '(error while formatting)'
         table.add_row([prop, data['type'], value])
 
     print table
