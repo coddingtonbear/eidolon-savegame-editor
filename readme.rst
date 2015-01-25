@@ -43,6 +43,22 @@ Commands
 
 Resets your hunger to zero.
 
+``add_items ITEM COUNT``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Adds items to your inventory.
+
+Options for ``ITEM`` include:
+
+* ``Mushrooms``
+* ``Tinder``
+
+*or* any item in your inventory.
+
+Note: This is limited to the above only because those are the only items
+I had in my pack while writing this.  If you have other item types in your
+pack, let me know.
+
 ``show_properties``
 ~~~~~~~~~~~~~~~~~~~
 

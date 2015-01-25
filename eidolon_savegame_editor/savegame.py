@@ -5,6 +5,11 @@ import shutil
 import struct
 
 
+INTEGER_ARRAY_NAMES = [
+    '_itemCounts',
+]
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -43,6 +48,13 @@ class Savegame(object):
         )
         shutil.copy(original_path, final_path)
 
+    def _pack_string(self, string):
+        return ''.join([
+            struct.pack('I', len(string) + 1),
+            string,
+            '\x00',
+        ])
+
     def set_content_range(self, start, end, value):
         self.contents = (
             self.contents[0:start] +
@@ -58,10 +70,57 @@ class Savegame(object):
             struct.pack('f', value)
         )
 
+    def set_array_property_string(self, name, value):
+        data = self.data[name]
+
+        packed_strings = ''.join([
+            self._pack_string(v) for v in value
+        ])
+        packed_array = ''.join([
+            struct.pack('I', len(value)),
+            packed_strings,
+        ])
+        output = ''.join([
+            struct.pack('I', len(packed_array)),
+            struct.pack('I', 0),
+            packed_array,
+        ])
+        self.set_content_range(
+            data['value_start'],
+            data['end'],
+            output,
+        )
+
+    def set_array_property_integer(self, name, value):
+        data = self.data[name]
+
+        packed_integers = ''.join([
+            struct.pack('I', v) for v in value
+        ])
+        packed_array = ''.join([
+            struct.pack('I', len(value)),
+            packed_integers
+        ])
+        output = ''.join([
+            struct.pack('I', len(packed_array)),
+            struct.pack('I', 0),
+            packed_array
+        ])
+        self.set_content_range(
+            data['value_start'],
+            data['end'],
+            output
+        )
+
     def set_property(self, name, value):
         property_type = self.data[name]['type']
         if property_type == 'FloatProperty':
             self.set_float_property(name, value)
+        elif property_type == 'ArrayProperty':
+            if name in INTEGER_ARRAY_NAMES:
+                self.set_array_property_integer(name, value)
+            else:
+                self.set_array_property_string(name, value)
         else:
             raise NotImplemented()
 
@@ -199,8 +258,9 @@ class Savegame(object):
             elif state == self.TYPE:
                 meta['type'] = self.read_string(meta['_size'])
                 logger.debug('Found type "%s", reading value', meta['type'])
+                meta['value_start'] = self.cursor
                 if meta['type'] == 'ArrayProperty':
-                    if meta['name'] == '_itemCounts':
+                    if meta['name'] in INTEGER_ARRAY_NAMES:
                         meta['value'] = self.read_array_property_integer()
                     else:
                         meta['value'] = self.read_array_property_string()

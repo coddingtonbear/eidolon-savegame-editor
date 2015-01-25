@@ -6,7 +6,7 @@ from .commands import COMMANDS
 
 
 def main(args=None):
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(args)
     parser.add_argument(
         'path', metavar='/path/to/savegame/', type=str,
         help="Path to your savegame file."
