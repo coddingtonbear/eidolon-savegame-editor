@@ -2,7 +2,7 @@ Eidolon Savegame Editor
 =======================
 
 Early in my playing of Eidolon, I somehow missed my chance to find the
-fishing pole, and continually had trouble finding enough food to survive
+fishing pole and continually had trouble finding enough food to survive
 as a result.  This is the tool I wrote to avoid having to trek all
 the way across the world to find that fishing pole.
 
