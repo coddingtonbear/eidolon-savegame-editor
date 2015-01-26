@@ -52,6 +52,8 @@ Options for ``ITEM`` include:
 
 * ``Mushrooms``
 * ``Tinder``
+* ``CookedFish``
+* ``Honey``
 
 *or* any other item in your inventory; use the key ``_items`` in
 ``show_properties`` to see what's in your inventory currently.
@@ -59,6 +61,18 @@ Options for ``ITEM`` include:
 Note: If the item name you enter is not something that exists in
 Eidolon, it will be ignored by the game, but will stay in your
 savegame file forever.
+
+``add_tool TOOL``
+~~~~~~~~~~~~~~~~~
+
+Adds a tool to your inventory.
+
+Options for ``TOOL`` include:
+
+* ``nocs``
+* ``rod``
+* ``compass``
+* ``bow``
 
 ``show_properties``
 ~~~~~~~~~~~~~~~~~~~

@@ -58,6 +58,22 @@ def add_items(save, backup, extra, **kwargs):
 
 
 @command
+def add_tool(save, backup, extra, **kwargs):
+    parser = argparse.ArgumentParser(extra)
+    parser.add_argument(
+        'tool', metavar='TOOL', type=str,
+        help="Which tool would you like to add to your inventory?",
+    )
+    args = parser.parse_args(extra)
+
+    tools = save.data['_tools']['value']
+    tools.append(args.tool)
+    save.set_property('_tools', tools)
+
+    save.write(backup=backup)
+
+
+@command
 def show_properties(save, **kwargs):
     table = Texttable()
     rows = [
